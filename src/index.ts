@@ -1,13 +1,16 @@
-import express from "express";
+import mongoose from 'mongoose';
+import swaggerDocs from './swagger';
+import createServer from './server';
+import config from '../config';
 
-const PORT = 8080;
+const app = createServer();
 
-const app = express();
-
-app.get("/api", (_, res) => {
-  res.send("Hello World!");
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}/api/`);
+app.listen(config.PORT, () => {
+    mongoose.connect(config.MONGODB_URI).catch(() => {
+        throw new Error('Failed to connect to the database');
+    });
+    swaggerDocs(app, config.PORT);
+    console.log(
+        `Server is running on http://localhost:${config.PORT}/api/login, current environment is ${process.env.NODE_ENV}`,
+    );
 });
