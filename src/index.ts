@@ -1,16 +1,19 @@
 import mongoose from 'mongoose';
 import swaggerDocs from './swagger';
 import createServer from './server';
-import config from '../config';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = createServer();
 
-app.listen(config.PORT, () => {
-    mongoose.connect(config.MONGODB_URI).catch(() => {
+const port = parseInt(process.env.PORT as string) || 3000;
+const mongodbUri = process.env.MONGODB_URI as string;
+
+app.listen(port, async () => {
+    await mongoose.connect(mongodbUri).catch(() => {
         throw new Error('Failed to connect to the database');
     });
-    swaggerDocs(app, config.PORT);
-    console.log(
-        `Server is running on http://localhost:${config.PORT}/api/login, current environment is ${process.env.NODE_ENV}`,
-    );
+    swaggerDocs(app, port);
+    console.log(`Server is running on http://localhost:${port}/api/login`);
 });
