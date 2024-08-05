@@ -1,7 +1,8 @@
 import User from './userModel';
 import UserValidator from './userValidation';
-import { IRegisterForm } from './userInterface';
+import { ILoginForm, IRegisterForm } from './userInterface';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 class UserService {
     static async getUserByEmail(email: string) {
@@ -12,6 +13,7 @@ class UserService {
             throw new Error('Error getting user by email');
         }
     }
+
     static async getUserByUsername(username: string) {
         try {
             return await User.findOne({ username });
@@ -20,6 +22,7 @@ class UserService {
             throw new Error('Error getting user by username');
         }
     }
+
     static async registerUser(formData: IRegisterForm) {
         try {
             const errors = await UserValidator.checkRegisterForm(formData);
@@ -40,6 +43,32 @@ class UserService {
         } catch (_) {
             /* istanbul ignore next */
             throw new Error('Error creating user');
+        }
+    }
+
+    static async loginUser(formData: ILoginForm) {
+        try {
+            const errors = await UserValidator.checkLoginForm(formData);
+            if (errors) {
+                return errors;
+            }
+
+            const email = formData.email;
+            const accessToken = jwt.sign(
+                { email },
+                process.env.ACCESS_TOKEN_SECRET as string,
+                {
+                    expiresIn:
+                        process.env.NODE_ENV === 'production'
+                            ? process.env.ACCESS_TOKEN_EXPIRE_PRO
+                            : process.env.ACCESS_TOKEN_EXPIRE_DEV,
+                },
+            );
+
+            return { accessToken };
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error login user');
         }
     }
 }

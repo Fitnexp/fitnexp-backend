@@ -1,9 +1,15 @@
-import { IRegisterForm, IRegisterFormErrors } from './userInterface';
+import {
+    ILoginForm,
+    ILoginFormErrors,
+    IRegisterForm,
+    IRegisterFormErrors,
+} from './userInterface';
 import UserService from './userService';
+import bcrypt from 'bcrypt';
 
 class UserValidator {
     private static validateEmail(
-        formData: IRegisterForm,
+        formData: IRegisterForm | ILoginForm,
         errors: IRegisterFormErrors,
     ) {
         if (typeof formData.email !== 'string' || !formData.email.trim()) {
@@ -26,7 +32,7 @@ class UserValidator {
     }
 
     private static validatePassword(
-        formData: IRegisterForm,
+        formData: IRegisterForm | ILoginForm,
         errors: IRegisterFormErrors,
     ) {
         if (
@@ -60,6 +66,7 @@ class UserValidator {
             errors.errors.passwordsEqual = 'Both passwords must be equal';
         }
     }
+
     static async checkUserAlreadyExistEmail(email: string) {
         const user = await UserService.getUserByEmail(email);
         if (user) {
@@ -67,6 +74,7 @@ class UserValidator {
         }
         return false;
     }
+
     static async checkUserAlreadyExistUsername(username: string) {
         const user = await UserService.getUserByUsername(username);
         if (user) {
@@ -74,6 +82,27 @@ class UserValidator {
         }
         return false;
     }
+
+    static async checkUserCredentials(
+        email: string,
+        password: string,
+        errors: ILoginFormErrors,
+    ) {
+        const user = await UserService.getUserByEmail(email);
+        if (!user) {
+            errors.errors.incorrectCredentials =
+                'Email or password is incorrect';
+            return errors.errors.incorrectCredentials;
+        }
+
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+            errors.errors.incorrectCredentials =
+                'Email or password is incorrect';
+            return errors.errors.incorrectCredentials;
+        }
+    }
+
     static async checkRegisterForm(formData: IRegisterForm) {
         const errors: IRegisterFormErrors = { errors: {} };
 
@@ -96,6 +125,30 @@ class UserValidator {
         if (await this.checkUserAlreadyExistUsername(formData.username)) {
             errors.errors.usernameInUse = 'Username is already in use';
         }
+
+        if (Object.keys(errors.errors).length === 0) {
+            return null;
+        }
+        return errors;
+    }
+
+    static async checkLoginForm(formData: ILoginForm) {
+        const errors: ILoginFormErrors = { errors: {} };
+
+        // Input validation
+        this.validateEmail(formData, errors);
+        this.validatePassword(formData, errors);
+
+        if (Object.keys(errors.errors).length !== 0) {
+            return errors;
+        }
+
+        // Database validation
+        await this.checkUserCredentials(
+            formData.email,
+            formData.password,
+            errors,
+        );
 
         if (Object.keys(errors.errors).length === 0) {
             return null;

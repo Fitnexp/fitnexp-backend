@@ -11,6 +11,8 @@ export interface IRegisterForm {
     confirmPassword: string;
 }
 
+export interface ILoginForm extends Pick<IRegisterForm, 'email' | 'password'> {}
+
 export interface IRegisterFormErrors {
     errors: {
         email?: string;
@@ -20,5 +22,13 @@ export interface IRegisterFormErrors {
         passwordsEqual?: string;
         emailInUse?: string;
         usernameInUse?: string;
+    };
+}
+
+export interface ILoginFormErrors {
+    errors: {
+        email?: string;
+        password?: string;
+        incorrectCredentials?: string;
     };
 }
