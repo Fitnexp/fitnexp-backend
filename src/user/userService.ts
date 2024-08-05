@@ -65,7 +65,18 @@ class UserService {
                 },
             );
 
-            return { accessToken };
+            const refreshToken = jwt.sign(
+                { email },
+                process.env.REFRESH_TOKEN_SECRET as string,
+                {
+                    expiresIn:
+                        process.env.NODE_ENV === 'production'
+                            ? process.env.REFRESH_TOKEN_EXPIRE_PRO
+                            : process.env.REFRESH_TOKEN_EXPIRE_DEV,
+                },
+            );
+
+            return { accessToken, refreshToken };
         } catch (_) {
             /* istanbul ignore next */
             throw new Error('Error login user');
