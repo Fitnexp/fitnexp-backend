@@ -27,6 +27,10 @@ jobs:
               run: npm run test:coverage
               env:
                   MONGODB_URI_TEST: ${{ secrets.MONGODB_URI_TEST }}
+                  ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+                  ACCESS_TOKEN_EXPIRATION: 10s
+                  REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+                  REFRESH_TOKEN_EXPIRATION: 1m
             - name: SonarCloud Scan
               uses: SonarSource/sonarcloud-github-action@master
               env:

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import UserController from './userController';
+import verifyJWT from '../verifyJWT';
 
 const userRoutes = Router();
 
@@ -59,5 +60,11 @@ userRoutes.route('/register').post(UserController.registerUser);
  *                 errors:
  *                   type: object
  */
+
+userRoutes.route('/login').post(UserController.loginUser);
+
+userRoutes.route('/logout').post(UserController.logoutUser);
+
+userRoutes.route('/protected').get(verifyJWT, UserController.protectedRoute);
 
 export default userRoutes;

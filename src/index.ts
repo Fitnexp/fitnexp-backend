@@ -14,6 +14,8 @@ app.listen(port, async () => {
     await mongoose.connect(mongodbUri).catch(() => {
         throw new Error('Failed to connect to the database');
     });
-    swaggerDocs(app, port);
-    console.log(`Server is running on http://localhost:${port}/api/login`);
+    swaggerDocs(app);
+    console.log(
+        `Server is running, docs are available at http://localhost:${port}/api/docs`,
+    );
 });
