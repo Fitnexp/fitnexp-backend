@@ -12,7 +12,7 @@ function verifyRefreshToken(
         process.env.REFRESH_TOKEN_SECRET as string,
         (err: Error | null, decoded: unknown) => {
             if (err) {
-                return res.status(400).send({ message: 'Unauthorized' });
+                return res.status(400).send({ errors: 'Unauthorized' });
             }
             req.email = (decoded as { email: string }).email;
             next();
@@ -27,7 +27,7 @@ function verifyJWT(
 ) {
     const cookies: Record<string, string> = req.cookies;
     if (!cookies?.accessToken || !cookies?.refreshToken) {
-        return res.status(400).send({ message: 'Unauthorized' });
+        return res.status(400).send({ errors: 'Unauthorized' });
     }
 
     jwt.verify(

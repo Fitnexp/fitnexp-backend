@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 
 const corsOptions = {
     origin: /^http:\/\/localhost:\d+$/,
+    credentials: true,
 };
 function createServer() {
     const app = express();

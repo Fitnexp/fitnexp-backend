@@ -33,7 +33,8 @@ class UserController {
                 {
                     httpOnly: true,
                     secure: false,
-                    sameSite: 'strict',
+                    sameSite: 'lax',
+                    domain: 'localhost',
                     maxAge: 60 * 60 * 24 * 7 * 1000,
                 },
             );
@@ -44,7 +45,8 @@ class UserController {
                 {
                     httpOnly: true,
                     secure: false,
-                    sameSite: 'strict',
+                    sameSite: 'lax',
+                    domain: 'localhost',
                     maxAge: 60 * 60 * 24 * 7 * 1000,
                 },
             );
