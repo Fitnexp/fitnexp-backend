@@ -58,7 +58,7 @@ class UserService {
                 { email },
                 process.env.ACCESS_TOKEN_SECRET as string,
                 {
-                    expiresIn: '5s',
+                    expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
                 },
             );
 
@@ -66,7 +66,7 @@ class UserService {
                 { email },
                 process.env.REFRESH_TOKEN_SECRET as string,
                 {
-                    expiresIn: '10s',
+                    expiresIn: process.env.REFRESH_TOKEN_EXPIRATION,
                 },
             );
 
