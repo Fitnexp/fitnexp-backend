@@ -58,11 +58,7 @@ class UserService {
                 { email },
                 process.env.ACCESS_TOKEN_SECRET as string,
                 {
-                    expiresIn:
-                        process.env.NODE_ENV === 'production'
-                            ? /* istanbul ignore next */
-                              process.env.ACCESS_TOKEN_EXPIRE_PRO
-                            : process.env.ACCESS_TOKEN_EXPIRE_DEV,
+                    expiresIn: '5s',
                 },
             );
 
@@ -70,11 +66,7 @@ class UserService {
                 { email },
                 process.env.REFRESH_TOKEN_SECRET as string,
                 {
-                    expiresIn:
-                        process.env.NODE_ENV === 'production'
-                            ? /* istanbul ignore next */
-                              process.env.REFRESH_TOKEN_EXPIRE_PRO
-                            : process.env.REFRESH_TOKEN_EXPIRE_DEV,
+                    expiresIn: '10s',
                 },
             );
 

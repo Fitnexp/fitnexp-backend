@@ -32,7 +32,7 @@ class UserController {
                 (tokens as { accessToken: string }).accessToken,
                 {
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
+                    secure: false,
                     sameSite: 'strict',
                     maxAge: 60 * 60 * 24 * 7 * 1000,
                 },
@@ -43,7 +43,7 @@ class UserController {
                 (tokens as { refreshToken: string }).refreshToken,
                 {
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
+                    secure: false,
                     sameSite: 'strict',
                     maxAge: 60 * 60 * 24 * 7 * 1000,
                 },
