@@ -63,7 +63,7 @@ userRoutes.route('/register').post(UserController.registerUser);
 
 userRoutes.route('/login').post(UserController.loginUser);
 
-userRoutes.route('/logout').get(UserController.logoutUser);
+userRoutes.route('/logout').post(UserController.logoutUser);
 
 userRoutes.route('/protected').get(verifyJWT, UserController.protectedRoute);
 

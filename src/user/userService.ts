@@ -60,7 +60,8 @@ class UserService {
                 {
                     expiresIn:
                         process.env.NODE_ENV === 'production'
-                            ? process.env.ACCESS_TOKEN_EXPIRE_PRO
+                            ? /* istanbul ignore next */
+                              process.env.ACCESS_TOKEN_EXPIRE_PRO
                             : process.env.ACCESS_TOKEN_EXPIRE_DEV,
                 },
             );
@@ -71,7 +72,8 @@ class UserService {
                 {
                     expiresIn:
                         process.env.NODE_ENV === 'production'
-                            ? process.env.REFRESH_TOKEN_EXPIRE_PRO
+                            ? /* istanbul ignore next */
+                              process.env.REFRESH_TOKEN_EXPIRE_PRO
                             : process.env.REFRESH_TOKEN_EXPIRE_DEV,
                 },
             );

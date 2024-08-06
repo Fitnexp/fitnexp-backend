@@ -51,7 +51,6 @@ class UserController {
 
             return res.status(200).send({
                 message: 'User logged in successfully',
-                ...tokens,
             });
         } catch (_) {
             /* istanbul ignore next */
@@ -59,12 +58,8 @@ class UserController {
         }
     }
 
-    static async logoutUser(req: Request, res: Response) {
+    static async logoutUser(_: Request, res: Response) {
         try {
-            const cookies = req.cookies;
-            if (!cookies?.accessToken || !cookies?.refreshToken) {
-                return res.status(200).send();
-            }
             res.clearCookie('accessToken');
             res.clearCookie('refreshToken');
             return res.status(200).send({ message: 'Logged out successfully' });
