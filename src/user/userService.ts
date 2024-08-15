@@ -63,8 +63,9 @@ class UserService {
             }
 
             const email = formData.email;
+            const user = await User.findOne({ email });
             const accessToken = jwt.sign(
-                { email },
+                { username: user?.username },
                 process.env.ACCESS_TOKEN_SECRET as string,
                 {
                     expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
@@ -72,7 +73,7 @@ class UserService {
             );
 
             const refreshToken = jwt.sign(
-                { email },
+                { username: user?.username },
                 process.env.REFRESH_TOKEN_SECRET as string,
                 {
                     expiresIn: process.env.REFRESH_TOKEN_EXPIRATION,

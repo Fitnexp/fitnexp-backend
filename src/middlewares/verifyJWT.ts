@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 function verifyRefreshToken(
     cookies: Record<string, string>,
-    req: Request & { email?: string },
+    req: Request,
     res: Response,
     next: NextFunction,
 ) {
@@ -14,17 +14,13 @@ function verifyRefreshToken(
             if (err) {
                 return res.status(400).send({ errors: 'Unauthorized' });
             }
-            req.email = (decoded as { email: string }).email;
+            req.username = (decoded as { username: string }).username;
             next();
         },
     );
 }
 
-function verifyJWT(
-    req: Request & { email?: string },
-    res: Response,
-    next: NextFunction,
-) {
+function verifyJWT(req: Request, res: Response, next: NextFunction) {
     const cookies: Record<string, string> = req.cookies;
     if (!cookies?.accessToken || !cookies?.refreshToken) {
         return res.status(400).send({ errors: 'Unauthorized' });
@@ -37,7 +33,7 @@ function verifyJWT(
             if (err) {
                 return verifyRefreshToken(cookies, req, res, next);
             }
-            req.email = (decoded as { email: string }).email;
+            req.username = (decoded as { username: string }).username;
             next();
         },
     );

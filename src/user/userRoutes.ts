@@ -131,6 +131,8 @@ userRoutes.route('/logout').post(UserController.logoutUser);
  *                   example: Logged out successfully.
  */
 
+userRoutes.route('/loggedUser').get(verifyJWT, UserController.loggedUser);
+
 userRoutes.route('/protected').get(verifyJWT, UserController.protectedRoute);
 /**
  * @swagger
