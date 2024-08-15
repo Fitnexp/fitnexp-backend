@@ -5,7 +5,6 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import swaggerJSdoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
-import { Response } from 'express';
 
 const options = {
     definition: {
