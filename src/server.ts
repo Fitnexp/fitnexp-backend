@@ -1,10 +1,10 @@
-import express from 'express';
 import cors from 'cors';
 import indexRoutes from './indexRoutes';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import swaggerJSdoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
+import express, { Response } from 'express';
 
 const options = {
     definition: {
