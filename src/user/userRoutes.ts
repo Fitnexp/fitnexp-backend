@@ -132,6 +132,36 @@ userRoutes.route('/logout').post(UserController.logoutUser);
  */
 
 userRoutes.route('/loggedUser').get(verifyJWT, UserController.loggedUser);
+/**
+ * @swagger
+ * /api/loggedUser:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Get logged user
+ *     description: This endpoint returns the logged user's information. The request must include a valid JWT token in the cookies.
+ *     responses:
+ *       200:
+ *         description: Logged user information obtained successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                   example: "Alba"
+ *       400:
+ *         description: Unauthorized. The request does not include a valid JWT token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: string
+ *                   example: Unauthorized.
+ */
 
 userRoutes.route('/protected').get(verifyJWT, UserController.protectedRoute);
 /**
@@ -160,7 +190,7 @@ userRoutes.route('/protected').get(verifyJWT, UserController.protectedRoute);
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 errors:
  *                   type: string
  *                   example: Unauthorized.
  */
