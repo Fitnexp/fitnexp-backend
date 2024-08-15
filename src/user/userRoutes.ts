@@ -163,36 +163,4 @@ userRoutes.route('/loggedUser').get(verifyJWT, UserController.loggedUser);
  *                   example: Unauthorized.
  */
 
-userRoutes.route('/protected').get(verifyJWT, UserController.protectedRoute);
-/**
- * @swagger
- * /api/protected:
- *   get:
- *     tags:
- *       - Users
- *     summary: Access a protected route
- *     description: This endpoint allows access to a protected route. The request must include a valid JWT token in the cookies.
- *     responses:
- *       200:
- *         description: Access to the protected route granted.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Welcome back <email>
- *       400:
- *         description: Unauthorized. The request does not include a valid JWT token.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errors:
- *                   type: string
- *                   example: Unauthorized.
- */
-
 export default userRoutes;

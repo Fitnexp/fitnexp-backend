@@ -36,7 +36,7 @@ function userTests(app: Express) {
             return response;
         };
 
-        const protectedRoute = async (status: number, logUser = false) => {
+        const loggedUserRoute = async (status: number, logUser = false) => {
             let cookie = '';
             if (logUser) {
                 const logUserresponse = await loginUser(200, {
@@ -48,7 +48,7 @@ function userTests(app: Express) {
             }
             const response = await supertest
                 .agent(app)
-                .get('/api/protected')
+                .get('/api/loggedUser')
                 .set('Cookie', cookie)
                 .send()
                 .expect(status);
@@ -243,15 +243,15 @@ function userTests(app: Express) {
             });
         });
 
-        describe('protected route', () => {
-            describe('when a logged out user accesses a protected route', () => {
+        describe('logged user route', () => {
+            describe('when a logged out user accesses logged user route', () => {
                 it('should return status 400', async () => {
-                    return await protectedRoute(400);
+                    return await loggedUserRoute(400);
                 });
             });
-            describe('when a logged in user accesses a protected route', () => {
+            describe('when a logged in user accesses logged user route', () => {
                 it('should return status 200', async () => {
-                    return await protectedRoute(200, true);
+                    return await loggedUserRoute(200, true);
                 });
             });
         });

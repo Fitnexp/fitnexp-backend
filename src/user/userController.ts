@@ -93,17 +93,6 @@ class UserController {
             throw new Error('Error getting logged in user');
         }
     }
-
-    static async protectedRoute(req: Request, res: Response) {
-        try {
-            return res
-                .status(200)
-                .send({ message: `Welcome back ${req.username}` });
-        } catch (_) {
-            /* istanbul ignore next */
-            throw new Error('Error accessing protected route');
-        }
-    }
 }
 
 export default UserController;
