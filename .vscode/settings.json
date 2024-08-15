@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "fitnexp",
+        "projectKey": "Fitnexp_fitnexp-backend"
+    }
+}

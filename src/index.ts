@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import swaggerDocs from './swagger';
 import createServer from './server';
 import dotenv from 'dotenv';
 
@@ -14,7 +13,6 @@ app.listen(port, async () => {
     await mongoose.connect(mongodbUri).catch(() => {
         throw new Error('Failed to connect to the database');
     });
-    swaggerDocs(app);
     console.log(
         `Server is running, docs are available at http://localhost:${port}/api/docs`,
     );

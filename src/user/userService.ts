@@ -3,8 +3,17 @@ import UserValidator from './userValidation';
 import { ILoginForm, IRegisterForm } from './userInterface';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import users from '../populate/data/users';
 
 class UserService {
+    static async getUsers() {
+        try {
+            return await User.find();
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error retrieving users');
+        }
+    }
     static async getUserByEmail(email: string) {
         try {
             return await User.findOne({ email });
@@ -54,8 +63,13 @@ class UserService {
             }
 
             const email = formData.email;
+            const user = await User.findOne({ email });
+            /* istanbul ignore next */
+            if (!user) {
+                throw new Error('User not found');
+            }
             const accessToken = jwt.sign(
-                { email },
+                { username: user.username },
                 process.env.ACCESS_TOKEN_SECRET as string,
                 {
                     expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
@@ -63,7 +77,7 @@ class UserService {
             );
 
             const refreshToken = jwt.sign(
-                { email },
+                { username: user.username },
                 process.env.REFRESH_TOKEN_SECRET as string,
                 {
                     expiresIn: process.env.REFRESH_TOKEN_EXPIRATION,
@@ -74,6 +88,18 @@ class UserService {
         } catch (_) {
             /* istanbul ignore next */
             throw new Error('Error login user');
+        }
+    }
+
+    static async populateUsers() {
+        try {
+            for (const user of users) {
+                await this.registerUser(user);
+            }
+            return;
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error populating users');
         }
     }
 }

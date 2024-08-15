@@ -62,8 +62,22 @@ class UserController {
 
     static async logoutUser(_: Request, res: Response) {
         try {
-            res.clearCookie('accessToken');
-            res.clearCookie('refreshToken');
+            res.cookie('accessToken', '', {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax',
+                domain: 'localhost',
+                expires: new Date(0),
+            });
+
+            res.cookie('refreshToken', '', {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax',
+                domain: 'localhost',
+                expires: new Date(0),
+            });
+            res.clearCookie('refreshToken', { path: '/' });
             return res.status(200).send({ message: 'Logged out successfully' });
         } catch (_) {
             /* istanbul ignore next */
@@ -71,17 +85,15 @@ class UserController {
         }
     }
 
-    static async protectedRoute(
-        req: Request & { email?: string },
+    static async loggedUser(
+        req: Request & { username?: string },
         res: Response,
     ) {
         try {
-            return res
-                .status(200)
-                .send({ message: `Welcome back ${req.email}` });
+            return res.status(200).send({ username: req.username });
         } catch (_) {
             /* istanbul ignore next */
-            throw new Error('Error accessing protected route');
+            throw new Error('Error getting logged in user');
         }
     }
 }

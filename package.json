@@ -12,7 +12,8 @@
         "test:coverage": "jest --coverage",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "populatedb": "tsc && node dist/src/populate/populateScript.js"
     },
     "author": "José Miguel García Casillas",
     "license": "UNLICENSED",
