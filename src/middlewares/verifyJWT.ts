@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 function verifyRefreshToken(
     cookies: Record<string, string>,
-    req: Request,
+    req: Request & { username?: string },
     res: Response,
     next: NextFunction,
 ) {
@@ -20,7 +20,11 @@ function verifyRefreshToken(
     );
 }
 
-function verifyJWT(req: Request, res: Response, next: NextFunction) {
+function verifyJWT(
+    req: Request & { username?: string },
+    res: Response,
+    next: NextFunction,
+) {
     const cookies: Record<string, string> = req.cookies;
     if (!cookies?.accessToken || !cookies?.refreshToken) {
         return res.status(400).send({ errors: 'Unauthorized' });

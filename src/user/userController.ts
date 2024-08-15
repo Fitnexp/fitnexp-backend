@@ -85,7 +85,10 @@ class UserController {
         }
     }
 
-    static async loggedUser(req: Request, res: Response) {
+    static async loggedUser(
+        req: Request & { username?: string },
+        res: Response,
+    ) {
         try {
             return res.status(200).send({ username: req.username });
         } catch (_) {
