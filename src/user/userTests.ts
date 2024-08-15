@@ -12,7 +12,6 @@ function userTests(app: Express) {
                 .send(userData)
                 .expect(status);
 
-            // console.log(response.body);
             return response;
         };
 
@@ -23,7 +22,6 @@ function userTests(app: Express) {
                 .send(userData)
                 .expect(status);
 
-            // console.log(response.body);
             return response;
         };
 
@@ -32,7 +30,6 @@ function userTests(app: Express) {
                 .post('/api/logout')
                 .expect(status);
 
-            // console.log(response.body);
             return response;
         };
 
@@ -41,7 +38,7 @@ function userTests(app: Express) {
             if (logUser) {
                 const logUserresponse = await loginUser(200, {
                     email: 'alberto@gmail.com',
-                    password: 'passwordpassword',
+                    password: 'passwordpassword', // NOSONAR
                 });
 
                 cookie = logUserresponse.headers['set-cookie'];
@@ -53,16 +50,15 @@ function userTests(app: Express) {
                 .send()
                 .expect(status);
 
-            // console.log(response.body);
             return response;
         };
 
         beforeEach(() => {
             user = {
                 email: 'test1@gmail.com',
-                password: 'testtesttesttesttest123',
+                password: 'testtesttesttesttest123', // NOSONAR
                 username: 'test123',
-                confirmPassword: 'testtesttesttesttest123',
+                confirmPassword: 'testtesttesttesttest123', // NOSONAR
             };
         });
 
@@ -79,26 +75,26 @@ function userTests(app: Express) {
             });
             describe('when the password is blank', () => {
                 it('should return status 400', async () => {
-                    return await registerUser(400, { password: '' });
+                    return await registerUser(400, { password: '' }); // NOSONAR
                 });
             });
             describe('when the password is not a string', () => {
                 it('should return status 400', async () => {
-                    return await registerUser(400, { password: 123 });
+                    return await registerUser(400, { password: 123 }); // NOSONAR
                 });
             });
             describe('when the password is shorter than 12 characters', () => {
                 it('should return status 400', async () => {
                     return await registerUser(400, {
                         password: '31324061203',
-                    });
+                    }); // NOSONAR
                 });
             });
             describe('when the password is longer than 32 characters', () => {
                 it('should return status 400', async () => {
                     return await registerUser(400, {
                         password: '701063091103467232677870762852102',
-                    });
+                    }); // NOSONAR
                 });
             });
             describe('when the username is blank', () => {
@@ -122,21 +118,21 @@ function userTests(app: Express) {
                 it('should return status 400', async () => {
                     return await registerUser(400, {
                         confirmPassword: '',
-                    });
+                    }); // NOSONAR
                 });
             });
             describe('when the confirmPassword is not a string', () => {
                 it('should return status 400', async () => {
                     return await registerUser(400, {
                         confirmPassword: 123,
-                    });
+                    }); // NOSONAR
                 });
             });
             describe('when the password and confirmPassword do not match', () => {
                 it('should return status 400', async () => {
                     return await registerUser(400, {
                         confirmPassword: 'test1234',
-                    });
+                    }); // NOSONAR
                 });
             });
             describe('when the email is already in use', () => {
@@ -173,26 +169,26 @@ function userTests(app: Express) {
             });
             describe('when the password is blank', () => {
                 it('should return status 400', async () => {
-                    return await loginUser(400, { password: '' });
+                    return await loginUser(400, { password: '' }); // NOSONAR
                 });
             });
             describe('when the password is not a string', () => {
                 it('should return status 400', async () => {
-                    return await loginUser(400, { password: 123 });
+                    return await loginUser(400, { password: 123 }); // NOSONAR
                 });
             });
             describe('when the password is shorter than 12 characters', () => {
                 it('should return status 400', async () => {
                     return await loginUser(400, {
                         password: '31324061203',
-                    });
+                    }); // NOSONAR
                 });
             });
             describe('when the password is longer than 32 characters', () => {
                 it('should return status 400', async () => {
                     return await registerUser(400, {
                         password: '701063091103467232677870762852102',
-                    });
+                    }); // NOSONAR
                 });
             });
             describe('when the email is incorrect', () => {
@@ -200,7 +196,7 @@ function userTests(app: Express) {
                     return await loginUser(400, {
                         email: 'thisdoesnotexist@gmail.com',
                         password: '3132406120331324061203',
-                    });
+                    }); // NOSONAR
                 });
             });
             describe('when the password is incorrect', () => {
@@ -208,7 +204,7 @@ function userTests(app: Express) {
                     return await loginUser(400, {
                         email: 'alberto@gmail.com',
                         password: 'randompassword',
-                    });
+                    }); // NOSONAR
                 });
             });
             describe('when the credentials are correct', () => {
@@ -216,7 +212,7 @@ function userTests(app: Express) {
                     const response = await loginUser(200, {
                         email: 'alberto@gmail.com',
                         password: 'passwordpassword',
-                    });
+                    }); // NOSONAR
                     expect(response.headers['set-cookie']).toBeDefined();
                     expect(response.headers['set-cookie'][0]).toContain(
                         'accessToken',

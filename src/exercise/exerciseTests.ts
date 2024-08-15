@@ -10,7 +10,7 @@ function exerciseTests(app: Express) {
                 .post('/api/login')
                 .send({
                     email: 'alberto@gmail.com',
-                    password: 'passwordpassword',
+                    password: 'passwordpassword', // NOSONAR,
                 })
                 .expect(200);
 
