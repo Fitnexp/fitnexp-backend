@@ -64,8 +64,12 @@ class UserService {
 
             const email = formData.email;
             const user = await User.findOne({ email });
+            /* istanbul ignore next */
+            if (!user) {
+                throw new Error('User not found');
+            }
             const accessToken = jwt.sign(
-                { username: user?.username },
+                { username: user.username },
                 process.env.ACCESS_TOKEN_SECRET as string,
                 {
                     expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
@@ -73,7 +77,7 @@ class UserService {
             );
 
             const refreshToken = jwt.sign(
-                { username: user?.username },
+                { username: user.username },
                 process.env.REFRESH_TOKEN_SECRET as string,
                 {
                     expiresIn: process.env.REFRESH_TOKEN_EXPIRATION,
