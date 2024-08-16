@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 
 import ExerciseService from '../exercise/exerciseService';
 import UserService from '../user/userService';
+import WorkoutService from '../workout/workoutService';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ async function populate(mongodbUri = process.env.MONGODB_URI as string) {
 
     await UserService.populateUsers();
     await ExerciseService.populateExercises();
+    await WorkoutService.populateWorkouts();
 
     mongoose.connection.close();
 }
