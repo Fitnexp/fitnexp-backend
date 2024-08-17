@@ -13,6 +13,7 @@ class WorkoutController {
             );
             res.status(200).send({ workouts: workouts });
         } catch (_) {
+            /* istanbul ignore next */
             throw new Error('Error retrieving workouts');
         }
     }

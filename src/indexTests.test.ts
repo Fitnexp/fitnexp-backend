@@ -5,6 +5,7 @@ import populate from './populate/populate';
 import populateTests from './populate/populateTests';
 import userTests from './user/userTests';
 import exerciseTests from './exercise/exerciseTests';
+import workoutTests from './workout/workoutTests';
 dotenv.config();
 
 const app = createServer();
@@ -26,4 +27,5 @@ describe('Tests', () => {
     populateTests();
     userTests(app);
     exerciseTests(app);
+    workoutTests(app);
 });
