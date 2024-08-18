@@ -8,7 +8,7 @@ class ExercisesController {
             return res.status(200).send({ exercises: exercises });
         } catch (_) {
             /* istanbul ignore next */
-            throw new Error('Error creating user');
+            throw new Error('Error retrieving exercises');
         }
     }
 }

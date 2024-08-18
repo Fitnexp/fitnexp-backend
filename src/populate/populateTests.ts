@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import UserService from '../user/userService';
 import ExerciseService from '../exercise/exerciseService';
+import WorkoutService from '../workout/workoutService';
 dotenv.config();
 
 function populateTests() {
@@ -13,6 +14,11 @@ function populateTests() {
         it('should have populated the database with exercise', async () => {
             const exercises = await ExerciseService.getExercises();
             expect(exercises.length).toBe(873);
+        });
+
+        it('should have populated the database with workouts', async () => {
+            const workouts = await WorkoutService.getWorkouts('Alberto');
+            expect(workouts.length).toBe(2);
         });
     });
 }

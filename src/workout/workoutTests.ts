@@ -1,24 +1,24 @@
 import { Express } from 'express';
 import { logUser, retrieveData } from '../utils/testsUtils';
 
-function exerciseTests(app: Express) {
-    describe('Exercise', () => {
+function workoutTests(app: Express) {
+    describe('Workout', () => {
         let cookie = '';
 
         beforeAll(async () => {
             cookie = await logUser(app);
         });
 
-        describe('when the user retrieves all exercises', () => {
-            it('should return all exercises', async () => {
+        describe('when the user retrieves all workouts', () => {
+            it('should return all workouts related to that user', async () => {
                 const response = await retrieveData(
                     app,
                     cookie,
-                    '/api/exercises',
+                    '/api/workouts',
                 );
-                expect(response.body.exercises.length).toBe(873);
+                expect(response.body.workouts.length).toBe(2);
             });
         });
     });
 }
-export default exerciseTests;
+export default workoutTests;
