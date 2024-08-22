@@ -54,4 +54,8 @@ exerciseRoutes.route('/').get(WorkoutController.getWorkouts);
  *                   example: Unauthorized.
  */
 
+exerciseRoutes
+    .route('/:id')
+    .get(WorkoutController.getCompletedExercisesWorkout);
+
 export default exerciseRoutes;

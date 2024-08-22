@@ -18,7 +18,7 @@ async function populate(mongodbUri = process.env.MONGODB_URI as string) {
     await UserService.populateUsers();
     await ExerciseService.populateExercises();
     await WorkoutService.populateWorkouts();
-
+    await ExerciseService.populateCompletedExercises();
     mongoose.connection.close();
 }
 

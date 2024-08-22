@@ -19,6 +19,24 @@ const exerciseSchema = new Schema<IExercise>(
     { timestamps: true },
 );
 
-const Exercise = mongoose.model<IExercise>('Exercise', exerciseSchema);
+export const Exercise = mongoose.model<IExercise>('Exercise', exerciseSchema);
 
-export default Exercise;
+const completedExercises = new Schema(
+    {
+        exercise_name: { type: String, required: true },
+        username: { type: String, required: true },
+        rest: { type: Number, required: true },
+        sets: [
+            {
+                repetitions: { type: Number, required: true },
+                weight: { type: Number, required: true },
+            },
+        ],
+    },
+    { timestamps: true },
+);
+
+export const CompletedExercise = mongoose.model(
+    'CompletedExercise',
+    completedExercises,
+);

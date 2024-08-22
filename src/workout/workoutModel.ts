@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import IWorkout from '../workout/workoutInterface';
-import Exercise from '../exercise/exerciseModel';
+import { Exercise } from '../exercise/exerciseModel';
 
 const { Schema } = mongoose;
 
