@@ -17,6 +17,7 @@ export async function retrieveData(
     app: Express,
     cookie: string,
     endpoint: string,
+    status = 200,
 ) {
     const response = await supertest
         .agent(app)
@@ -24,6 +25,6 @@ export async function retrieveData(
         .set('Cookie', cookie)
         .send();
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(status);
     return response;
 }

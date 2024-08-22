@@ -33,6 +33,16 @@ const workouts: IWorkout[] = [
             exercisesDictionary['Alternate Heel Touchers'],
         ],
     },
+    {
+        username: 'Jane Doe',
+        name: 'Legs Monday',
+        description: 'Leg workout for Monday',
+        exercises: [
+            exercisesDictionary['Barbell Squat'],
+            exercisesDictionary['Barbell Squat To A Bench'],
+            exercisesDictionary['Barbell Walking Lunge'],
+        ],
+    },
 ];
 
 export default workouts;
