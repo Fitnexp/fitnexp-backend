@@ -20,6 +20,14 @@ function populateTests() {
             const workouts = await WorkoutService.getWorkouts('Alberto');
             expect(workouts.length).toBe(2);
         });
+
+        it('should have populated the database with completed exercises', async () => {
+            const exercises = await ExerciseService.getLatestCompletedExercise(
+                'Alberto',
+                'Ab Roller',
+            );
+            expect(exercises.length).toBe(1);
+        });
     });
 }
 
