@@ -57,5 +57,48 @@ exerciseRoutes.route('/').get(WorkoutController.getWorkouts);
 exerciseRoutes
     .route('/:id')
     .get(WorkoutController.getCompletedExercisesWorkout);
-
+/**
+ * @swagger
+ * /api/workouts/{id}:
+ *   get:
+ *     tags:
+ *       - Workouts
+ *     summary: Get completed exercises for a workout
+ *     description: Retrieve all completed exercises for a specific workout by ID. The request must include a valid JWT token in the cookies.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The workout ID
+ *     responses:
+ *       200:
+ *         description: Completed exercises from the workout obtained successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                - username
+ *                - name
+ *               properties:
+ *                completedExercises:
+ *                 type: array
+ *                 items:
+ *                  type: array
+ *                  items:
+ *                   type: object
+ *                   example:
+ *                    {"_id": "66c79a0cd084e4e5700c3acf","exercise_name": "Ab Roller","username": "Alberto","rest": 60,"sets": [{"repetitions": 20,"weight": 10,"_id": "66c79a0cd084e4e5700c3ad0"},{"repetitions": 20,"weight": 10,"_id": "66c79a0cd084e4e5700c3ad1"}],"__v": 0,"createdAt": "2024-08-22T20:05:32.443Z","updatedAt": "2024-08-22T20:05:32.443Z"}
+ *       400:
+ *          description: The ID may be invalid or the user has not logged in.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  errors:
+ *                    type: object
+ */
 export default exerciseRoutes;
