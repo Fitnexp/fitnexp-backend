@@ -117,7 +117,7 @@ export default exerciseRoutes;
  *                   description: List of sets with repetitions and weight
  *     responses:
  *       200:
- *         description: User created successfully.
+ *         description: Completed exercise posted successfully.
  *         content:
  *           application/json:
  *             schema:
