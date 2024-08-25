@@ -1,6 +1,7 @@
 import {
     ICompletedExercise,
     ICompletedExerciseErrors,
+    Set,
 } from './exerciseInterface';
 
 class ExerciseValidator {
@@ -81,7 +82,7 @@ class ExerciseValidator {
         }
     }
 
-    private static validateSet(set: any, errors: ICompletedExerciseErrors) {
+    private static validateSet(set: Set, errors: ICompletedExerciseErrors) {
         if (!set.weight) {
             errors.errors.weight = 'Weight is required';
             return;
