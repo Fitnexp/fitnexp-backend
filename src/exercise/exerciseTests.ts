@@ -39,7 +39,6 @@ function exerciseTests(app: Express) {
                     .send(completedExerciseData);
 
                 expect(response.status).toBe(status);
-                console.log(response.body);
                 return response;
             };
 
