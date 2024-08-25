@@ -37,7 +37,7 @@ function workoutTests(app: Express) {
             describe('if a user is trying to retrieve data from a workout that does not belong to them', () => {
                 it('should return a 400 status code', async () => {
                     const workout = await WorkoutService.getWorkoutByName(
-                        'this certainly',
+                        'Jane Doe',
                         'does not exist',
                     );
                     expect(

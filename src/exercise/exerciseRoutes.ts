@@ -70,4 +70,68 @@ exerciseRoutes.route('/').get(ExerciseController.getExercises);
  *                   example: Unauthorized.
  */
 
+exerciseRoutes
+    .route('/completed-exercise')
+    .post(ExerciseController.postCompletedExercise);
 export default exerciseRoutes;
+/**
+ * @swagger
+ * /api/exercises/completed-exercise:
+ *   post:
+ *     tags:
+ *       - Exercises
+ *     summary: Post a completed exercise
+ *     description: This endpoint posts a completed exercise to the database. The request must include a valid JWT token in the cookies.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - exercise_name
+ *               - username
+ *               - rest
+ *               - sets
+ *             properties:
+ *               exercise_name:
+ *                 type: string
+ *                 description: The exercise's name.
+ *               username:
+ *                 type: string
+ *                 description: The user's name.
+ *               rest:
+ *                 type: number
+ *                 description: The number of seconds of rest between sets.
+ *               sets:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     repetitions:
+ *                       type: integer
+ *                       description: Number of repetitions
+ *                     weight:
+ *                       type: integer
+ *                       description: Weight used
+ *                   description: List of sets with repetitions and weight
+ *     responses:
+ *       200:
+ *         description: Completed exercise posted successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Bad request. The request body is missing required fields or contains invalid data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: object
+ */
