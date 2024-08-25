@@ -76,3 +76,14 @@ export interface ICompletedExercise {
     rest: number;
     sets: Set[];
 }
+
+export interface ICompletedExerciseErrors {
+    errors: {
+        exercise_name?: string;
+        username?: string;
+        rest?: string;
+        sets?: string;
+        weight?: string;
+        repetitions?: string;
+    };
+}

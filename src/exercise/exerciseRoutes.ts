@@ -70,4 +70,7 @@ exerciseRoutes.route('/').get(ExerciseController.getExercises);
  *                   example: Unauthorized.
  */
 
+exerciseRoutes
+    .route('/completed-exercise')
+    .post(ExerciseController.postCompletedExercise);
 export default exerciseRoutes;

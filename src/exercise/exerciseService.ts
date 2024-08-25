@@ -2,6 +2,8 @@ import { Exercise, CompletedExercise } from './exerciseModel';
 import exercises from '../populate/data/exercises';
 import IWorkout from '../workout/workoutInterface';
 import completedExercises from '../populate/data/completedExercises';
+import { ICompletedExercise } from './exerciseInterface';
+import ExerciseValidator from '../exercise/exerciseValidator';
 
 class ExerciseService {
     static async getExercises() {
@@ -57,6 +59,34 @@ class ExerciseService {
         } catch (_) {
             /* istanbul ignore next */
             throw new Error('Error retrieving latest completed exercises');
+        }
+    }
+
+    static async postCompletedExercise(
+        completedExercise: ICompletedExercise,
+        usernameCookie: string,
+    ) {
+        try {
+            const errors = await ExerciseValidator.validateCompletedExercise(
+                completedExercise,
+                usernameCookie,
+            );
+            if (errors) {
+                return errors;
+            }
+
+            const { exercise_name, username, rest, sets } = completedExercise;
+            const newCompletedExercise = new CompletedExercise({
+                exercise_name,
+                username,
+                rest,
+                sets,
+            });
+            await newCompletedExercise.save();
+            return newCompletedExercise;
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error saving new completed exercise');
         }
     }
 
