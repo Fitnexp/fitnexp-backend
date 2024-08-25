@@ -1,5 +1,5 @@
 import User from './userModel';
-import UserValidator from './userValidation';
+import UserValidator from './userValidator';
 import { ILoginForm, IRegisterForm } from './userInterface';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
