@@ -21,6 +21,37 @@ function exerciseTests(app: Express) {
             });
         });
 
+        describe('get all completed exercises', () => {
+            it('should return all completed exercises from an user', async () => {
+                const response = await retrieveData(
+                    app,
+                    cookie,
+                    '/api/exercises/completed-exercises',
+                );
+                expect(response.body.completedExercises.length).toBe(7);
+            });
+        });
+
+        describe('get exercises by name', () => {
+            it('should return all exercises with the given names', async () => {
+                const response = await supertest
+                    .agent(app)
+                    .post('/api/exercises/names')
+                    .set('Cookie', cookie)
+                    .send({
+                        names: [
+                            'Ab Roller',
+                            'Ab Roller',
+                            'bad one',
+                            '3/4 Sit-Up',
+                        ],
+                    });
+
+                expect(response.status).toBe(200);
+                expect(response.body.exercises.length).toBe(3);
+            });
+        });
+
         describe('post a complete exercise', () => {
             let completedExercise: object;
 
