@@ -131,10 +131,10 @@ userRoutes.route('/logout').post(UserController.logoutUser);
  *                   example: Logged out successfully.
  */
 
-userRoutes.route('/loggedUser').get(verifyJWT, UserController.loggedUser);
+userRoutes.route('/logged-user').get(verifyJWT, UserController.loggedUser);
 /**
  * @swagger
- * /api/loggedUser:
+ * /api/logged-user:
  *   get:
  *     tags:
  *       - Users

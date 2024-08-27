@@ -45,7 +45,7 @@ function userTests(app: Express) {
             }
             const response = await supertest
                 .agent(app)
-                .get('/api/loggedUser')
+                .get('/api/logged-user')
                 .set('Cookie', cookie)
                 .send()
                 .expect(status);
