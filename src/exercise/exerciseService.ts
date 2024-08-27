@@ -18,7 +18,7 @@ class ExerciseService {
 
     static async getExercisesByName(names: string[]) {
         try {
-            let exercises = [];
+            const exercises = [];
             for (const name of names) {
                 const exercise = await Exercise.findOne({ name });
                 if (exercise) {
