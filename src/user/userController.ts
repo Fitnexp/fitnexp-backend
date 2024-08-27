@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import UserService from './userService';
-import { ILoginForm, IRegisterForm } from './userInterface';
+import { ILoginForm, IRegisterForm, IUser } from './userInterface';
 
 class UserController {
     static async registerUser(req: Request, res: Response) {
@@ -90,7 +90,15 @@ class UserController {
         res: Response,
     ) {
         try {
-            return res.status(200).send({ username: req.username });
+            const user = await UserService.getUserByUsername(
+                req.username as string,
+            );
+            return res.status(200).send({
+                username: (user as IUser).username,
+                exercisesDone: (user as IUser).exercisesDone,
+                weightLifted: (user as IUser).weightLifted,
+                repetitionsDone: (user as IUser).repetitionsDone,
+            });
         } catch (_) {
             /* istanbul ignore next */
             throw new Error('Error getting logged in user');

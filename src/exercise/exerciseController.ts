@@ -12,6 +12,36 @@ class ExercisesController {
         }
     }
 
+    static async getExercisesByName(req: Request, res: Response) {
+        try {
+            const names: string[] = req.body.names;
+            const exercises = await ExerciseService.getExercisesByName(names);
+            return res.status(200).send({ exercises: exercises });
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error retrieving exercises');
+        }
+    }
+
+    static async getAllCompletedExerciseUser(
+        req: Request & { username?: string },
+        res: Response,
+    ) {
+        try {
+            const username = req.username;
+            const completedExercises =
+                await ExerciseService.getAllCompletedExerciseUser(
+                    username as string,
+                );
+            return res
+                .status(200)
+                .send({ completedExercises: completedExercises });
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error retrieving completed exercises');
+        }
+    }
+
     static async postCompletedExercise(
         req: Request & { username?: string },
         res: Response,

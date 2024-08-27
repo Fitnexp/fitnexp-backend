@@ -4,6 +4,7 @@ import IWorkout from '../workout/workoutInterface';
 import completedExercises from '../populate/data/completedExercises';
 import { ICompletedExercise } from './exerciseInterface';
 import ExerciseValidator from '../exercise/exerciseValidator';
+import UserService from '../user/userService';
 
 class ExerciseService {
     static async getExercises() {
@@ -12,6 +13,31 @@ class ExerciseService {
         } catch (_) {
             /* istanbul ignore next */
             throw new Error('Error retrieving exercises');
+        }
+    }
+
+    static async getExercisesByName(names: string[]) {
+        try {
+            let exercises = [];
+            for (const name of names) {
+                const exercise = await Exercise.findOne({ name });
+                if (exercise) {
+                    exercises.push(exercise);
+                }
+            }
+            return exercises;
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error retrieving exercises');
+        }
+    }
+
+    static async getAllCompletedExerciseUser(username: string) {
+        try {
+            return await CompletedExercise.find({ username });
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error retrieving completed exercises');
         }
     }
 
@@ -82,6 +108,21 @@ class ExerciseService {
                 rest,
                 sets,
             });
+
+            const user = await UserService.getUserByUsername(username);
+            if (user) {
+                user.exercisesDone += 1;
+                user.weightLifted += sets.reduce(
+                    (total, set) => total + set.weight,
+                    0,
+                );
+                user.repetitionsDone += sets.reduce(
+                    (total, set) => total + set.repetitions,
+                    0,
+                );
+                await user.save();
+            }
+
             await newCompletedExercise.save();
             return newCompletedExercise;
         } catch (_) {
@@ -101,7 +142,12 @@ class ExerciseService {
 
     static async populateCompletedExercises() {
         try {
-            return await CompletedExercise.insertMany(completedExercises);
+            for (const completedExercise of completedExercises) {
+                await this.postCompletedExercise(
+                    completedExercise,
+                    completedExercise.username,
+                );
+            }
         } catch (_) {
             /* istanbul ignore next */
             throw new Error('Error populating created exercises');
