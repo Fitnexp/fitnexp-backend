@@ -75,6 +75,11 @@ export interface ICompletedExercise {
     username: string;
     rest: number;
     sets: Set[];
+
+    greatest_weight: number;
+    greatest_theorical_onerm: number;
+    greatest_volume_oneset: number;
+    greatest_volume: number;
 }
 
 export interface ICompletedExerciseErrors {

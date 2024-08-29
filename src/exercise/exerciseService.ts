@@ -32,9 +32,11 @@ class ExerciseService {
         }
     }
 
-    static async getAllCompletedExerciseUser(username: string) {
+    static async getAllCompletedExercisesUser(username: string) {
         try {
-            return await CompletedExercise.find({ username });
+            return await CompletedExercise.find({ username }).sort({
+                createdAt: -1,
+            });
         } catch (_) {
             /* istanbul ignore next */
             throw new Error('Error retrieving completed exercises');
@@ -102,11 +104,41 @@ class ExerciseService {
             }
 
             const { exercise_name, username, rest, sets } = completedExercise;
+            let {
+                greatest_weight,
+                greatest_theorical_onerm,
+                greatest_volume,
+                greatest_volume_oneset,
+            } = completedExercise;
+
+            let totalVolume = 0;
+            for (const set of sets) {
+                if (set.weight > greatest_weight) {
+                    greatest_weight = set.weight;
+                    greatest_theorical_onerm = parseFloat(
+                        (set.weight * (1 + set.repetitions / 30)).toFixed(2),
+                    ); // Epley formula
+                }
+
+                if (set.weight * set.repetitions > greatest_volume_oneset) {
+                    greatest_volume_oneset = set.weight * set.repetitions;
+                }
+
+                totalVolume += set.weight * set.repetitions;
+            }
+            if (totalVolume > greatest_volume) {
+                greatest_volume = totalVolume;
+            }
+
             const newCompletedExercise = new CompletedExercise({
                 exercise_name,
                 username,
                 rest,
                 sets,
+                greatest_weight,
+                greatest_theorical_onerm,
+                greatest_volume,
+                greatest_volume_oneset,
             });
 
             const user = await UserService.getUserByUsername(username);

@@ -23,14 +23,14 @@ class ExercisesController {
         }
     }
 
-    static async getAllCompletedExerciseUser(
+    static async getAllCompletedExercisesUser(
         req: Request & { username?: string },
         res: Response,
     ) {
         try {
             const username = req.username;
             const completedExercises =
-                await ExerciseService.getAllCompletedExerciseUser(
+                await ExerciseService.getAllCompletedExercisesUser(
                     username as string,
                 );
             return res

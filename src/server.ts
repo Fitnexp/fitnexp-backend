@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import swaggerJSdoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 import express, { Response } from 'express';
+import ExpressMongoSanitize from 'express-mongo-sanitize';
 
 const options = {
     definition: {
@@ -26,6 +27,7 @@ const corsOptions = {
 };
 function createServer() {
     const app = express();
+    app.use(ExpressMongoSanitize());
     app.use(cors(corsOptions));
     app.use(cookieParser());
     app.use(express.json());
