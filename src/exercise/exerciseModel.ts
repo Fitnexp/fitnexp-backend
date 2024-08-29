@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { IExercise } from './exerciseInterface';
+import { ICompletedExercise, IExercise } from './exerciseInterface';
 
 const { Schema } = mongoose;
 
@@ -32,11 +32,16 @@ const completedExercises = new Schema(
                 weight: { type: Number, required: true },
             },
         ],
+
+        greatest_weight: { type: Number, default: 0 },
+        greatest_theorical_onerm: { type: Number, default: 0 },
+        greatest_volume_oneset: { type: Number, default: 0 },
+        greatest_volume: { type: Number, default: 0 },
     },
     { timestamps: true },
 );
 
-export const CompletedExercise = mongoose.model(
+export const CompletedExercise = mongoose.model<ICompletedExercise>(
     'CompletedExercise',
     completedExercises,
 );
