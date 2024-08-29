@@ -103,11 +103,8 @@ class ExerciseService {
                 return errors;
             }
 
+            const { exercise_name, username, rest, sets } = completedExercise;
             let {
-                exercise_name,
-                username,
-                rest,
-                sets,
                 greatest_weight,
                 greatest_theorical_onerm,
                 greatest_volume,
