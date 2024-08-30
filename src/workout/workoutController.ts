@@ -51,6 +51,35 @@ class WorkoutController {
             throw new Error(error as string);
         }
     }
+
+    static async deleteExerciseFromWorkout(
+        req: Request & { username?: string },
+        res: Response,
+    ) {
+        try {
+            const { workoutId, position } = req.params;
+            const username = req.username;
+
+            const deleteExercise =
+                await WorkoutService.deleteExerciseFromWorkout(
+                    username as string,
+                    workoutId,
+                    position,
+                );
+
+            if (deleteExercise.errors) {
+                res.status(400).json(deleteExercise);
+                return;
+            }
+
+            res.status(200).json({
+                message: 'Exercise deleted successfully',
+            });
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error deleting exercise from workout');
+        }
+    }
 }
 
 export default WorkoutController;

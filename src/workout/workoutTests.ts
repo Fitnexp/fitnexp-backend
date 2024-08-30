@@ -2,6 +2,8 @@ import { Express } from 'express';
 import { logUser, retrieveData } from '../utils/testsUtils';
 import WorkoutService from './workoutService';
 import workouts from '../populate/data/workouts';
+import supertest from 'supertest';
+import IWorkout from './workoutInterface';
 
 function workoutTests(app: Express) {
     describe('Workout', () => {
@@ -102,6 +104,70 @@ function workoutTests(app: Express) {
                         200,
                     );
                     expect(response.status).toBe(200);
+                });
+            });
+        });
+
+        describe('when the user deletes an exercise from a workout', () => {
+            describe("if the workout id is not valid'", () => {
+                it('should return a 400 status code', async () => {
+                    const workout_id = 'invalid_id';
+                    const response = await supertest
+                        .agent(app)
+                        .delete(`/api/workouts/${workout_id}/exercises/0`)
+                        .set('Cookie', cookie)
+                        .send();
+
+                    expect(response.status).toBe(400);
+                    return response;
+                });
+            });
+
+            describe('if the workout id is valid but the position is not valid', () => {
+                it('should return a 400 status code', async () => {
+                    const workout = (await WorkoutService.getWorkoutByName(
+                        workouts[0].username,
+                        workouts[0].name,
+                    )) as { _id: string };
+
+                    const response = await supertest
+                        .agent(app)
+                        .delete(`/api/workouts/${workout._id}/exercises/100`)
+                        .set('Cookie', cookie)
+                        .send();
+
+                    expect(response.status).toBe(400);
+                    return response;
+                });
+            });
+
+            describe("if the data is valid'", () => {
+                it('should return a 200 status code', async () => {
+                    const workout = (await WorkoutService.getWorkoutByName(
+                        workouts[0].username,
+                        workouts[0].name,
+                    )) as unknown as IWorkout & { _id: string };
+
+                    const numberExercises = workout.exercises.length;
+
+                    const response = await supertest
+                        .agent(app)
+                        .delete(`/api/workouts/${workout._id}/exercises/0`)
+                        .set('Cookie', cookie)
+                        .send();
+
+                    expect(response.status).toBe(200);
+
+                    const updatedWorkout = await WorkoutService.getWorkout(
+                        workout.username,
+                        workout._id,
+                    );
+
+                    expect((updatedWorkout as IWorkout).exercises.length).toBe(
+                        numberExercises - 1,
+                    );
+
+                    return response;
                 });
             });
         });
