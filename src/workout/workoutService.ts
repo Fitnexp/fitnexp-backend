@@ -1,5 +1,7 @@
+import mongoose from 'mongoose';
 import workouts from '../populate/data/workouts';
 import Workout from './workoutModel';
+import IWorkout from './workoutInterface';
 
 class WorkoutService {
     static async getWorkout(username: string, id: string) {
@@ -40,6 +42,46 @@ class WorkoutService {
         }
     }
 
+    static async deleteExerciseFromWorkout(
+        username: string,
+        workoutId: string,
+        position: string,
+    ) {
+        try {
+            if (!mongoose.isValidObjectId(workoutId)) {
+                return { errors: 'Invalid workout ID' };
+            }
+
+            const workout = await WorkoutService.getWorkout(
+                username,
+                workoutId,
+            );
+
+            /* istanbul ignore next */
+            if (workout.errors) {
+                return workout;
+            }
+
+            const pos = parseInt(position, 10);
+            if (
+                isNaN(pos) ||
+                pos < 0 ||
+                pos >= (workout as IWorkout).exercises.length
+            ) {
+                return { errors: 'Invalid position' };
+            }
+
+            (workout as IWorkout).exercises.splice(pos, 1);
+
+            const updatedWorkout = workout as mongoose.Document & IWorkout;
+            await updatedWorkout.save();
+
+            return updatedWorkout;
+        } catch (error: unknown) {
+            /* istanbul ignore next */
+            throw new Error('Error deleting exercise from workout');
+        }
+    }
     static async populateWorkouts() {
         try {
             return await Workout.insertMany(workouts);

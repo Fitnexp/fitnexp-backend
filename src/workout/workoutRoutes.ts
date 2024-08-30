@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import WorkoutController from './workoutController';
 
-const exerciseRoutes = Router();
+const workoutRoutes = Router();
 
-exerciseRoutes.route('/').get(WorkoutController.getWorkouts);
+workoutRoutes.route('/').get(WorkoutController.getWorkouts);
 /**
  * @swagger
  * /api/workouts:
@@ -54,9 +54,7 @@ exerciseRoutes.route('/').get(WorkoutController.getWorkouts);
  *                   example: Unauthorized.
  */
 
-exerciseRoutes
-    .route('/:id')
-    .get(WorkoutController.getCompletedExercisesWorkout);
+workoutRoutes.route('/:id').get(WorkoutController.getCompletedExercisesWorkout);
 /**
  * @swagger
  * /api/workouts/{id}:
@@ -101,4 +99,10 @@ exerciseRoutes
  *                  errors:
  *                    type: object
  */
-export default exerciseRoutes;
+
+workoutRoutes.delete(
+    '/:workoutId/exercises/:position',
+    WorkoutController.deleteExerciseFromWorkout,
+);
+
+export default workoutRoutes;
