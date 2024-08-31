@@ -54,6 +54,8 @@ workoutRoutes.route('/').get(WorkoutController.getWorkouts);
  *                   example: Unauthorized.
  */
 
+workoutRoutes.post('/', WorkoutController.createWorkout);
+
 workoutRoutes.route('/:id').get(WorkoutController.getCompletedExercisesWorkout);
 /**
  * @swagger

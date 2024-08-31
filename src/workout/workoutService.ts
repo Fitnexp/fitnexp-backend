@@ -3,6 +3,7 @@ import workouts from '../populate/data/workouts';
 import Workout from './workoutModel';
 import IWorkout from './workoutInterface';
 import { IExercise } from '../exercise/exerciseInterface';
+import WorkoutValidator from './workoutValidator';
 
 class WorkoutService {
     static async getWorkout(username: string, id: string) {
@@ -40,6 +41,28 @@ class WorkoutService {
         } catch (_) {
             /* istanbul ignore next */
             throw new Error('Error retrieving workouts');
+        }
+    }
+
+    static async createWorkout(workout: IWorkout) {
+        try {
+            const errors = WorkoutValidator.validateWorkout(workout);
+            if (errors) {
+                return errors;
+            }
+
+            const { username, name, description } = workout;
+            const newWorkout = new Workout({
+                username,
+                name,
+                description,
+                exercises: [],
+            });
+            await newWorkout.save();
+            return newWorkout;
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error creating workout');
         }
     }
 

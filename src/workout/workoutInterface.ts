@@ -6,3 +6,10 @@ export default interface IWorkout {
     description?: string;
     exercises: IExercise[];
 }
+
+export interface IWorkoutErrors {
+    errors: {
+        name?: string;
+        description?: string;
+    };
+}
