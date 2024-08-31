@@ -218,6 +218,100 @@ function workoutTests(app: Express) {
                 });
             });
         });
+
+        describe('when the user adds an exercise to a workout', () => {
+            const invalidWorkoutId = 'invalid_id';
+            let validWorkoutId: string;
+            let initialExerciseCount: number;
+
+            beforeAll(async () => {
+                const workout = (await WorkoutService.getWorkoutByName(
+                    workouts[0].username,
+                    workouts[0].name,
+                )) as unknown as IWorkout & { _id: string };
+
+                validWorkoutId = workout._id;
+                initialExerciseCount = workout.exercises.length;
+            });
+
+            describe('if the workout id is not valid', () => {
+                it('should return a 400 status code', async () => {
+                    const response = await supertest
+                        .agent(app)
+                        .post(`/api/workouts/${invalidWorkoutId}/exercises`)
+                        .set('Cookie', cookie)
+                        .send(exercises[0]);
+
+                    expect(response.status).toBe(400);
+                });
+            });
+
+            describe('if the data is valid', () => {
+                it('should return a 200 status code and add the exercise', async () => {
+                    const response = await supertest
+                        .agent(app)
+                        .post(`/api/workouts/${validWorkoutId}/exercises`)
+                        .set('Cookie', cookie)
+                        .send(exercises[0]);
+
+                    expect(response.status).toBe(200);
+
+                    const updatedWorkout = await WorkoutService.getWorkout(
+                        workouts[0].username,
+                        validWorkoutId,
+                    );
+
+                    expect((updatedWorkout as IWorkout).exercises.length).toBe(
+                        initialExerciseCount + 1,
+                    );
+                });
+            });
+        });
+
+        describe('when the user adds a new workout', () => {
+            const workout = {
+                name: 'New Workout',
+                description: 'This is a new workout',
+            };
+
+            const tests = [
+                {
+                    description: 'if the workout name is empty',
+                    status: 400,
+                    data: { ...workout, name: '' },
+                },
+                {
+                    description: 'if the workout name is not a string',
+                    status: 400,
+                    data: { ...workout, name: 12 },
+                },
+                {
+                    description: 'if the workout description is not a string',
+                    status: 400,
+                    data: { ...workout, description: 12 },
+                },
+                {
+                    description: "if the data is valid'",
+                    status: 200,
+                    data: workout,
+                },
+            ];
+
+            tests.forEach((test) => {
+                describe(test.description, () => {
+                    it(`should return a ${test.status} status code`, async () => {
+                        const response = await supertest
+                            .agent(app)
+                            .post(`/api/workouts`)
+                            .set('Cookie', cookie)
+                            .send(test.data);
+
+                        expect(response.status).toBe(test.status);
+                        return response;
+                    });
+                });
+            });
+        });
     });
 }
 export default workoutTests;

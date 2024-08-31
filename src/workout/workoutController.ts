@@ -53,6 +53,31 @@ class WorkoutController {
         }
     }
 
+    static async createWorkout(
+        req: Request & { username?: string },
+        res: Response,
+    ) {
+        try {
+            const username = req.username;
+            const workout: IWorkout = req.body;
+            workout.username = username as string;
+
+            const newWorkout = await WorkoutService.createWorkout(workout);
+
+            if (newWorkout.errors) {
+                return res.status(400).send(newWorkout);
+            }
+
+            return res.status(200).send({
+                workout: newWorkout,
+                message: 'Workout created successfully',
+            });
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error creating workout');
+        }
+    }
+
     static async deleteExerciseFromWorkout(
         req: Request & { username?: string },
         res: Response,
