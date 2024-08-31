@@ -105,4 +105,9 @@ workoutRoutes.delete(
     WorkoutController.deleteExerciseFromWorkout,
 );
 
+workoutRoutes.post(
+    '/:workoutId/exercises',
+    WorkoutController.addExerciseToWorkout,
+);
+
 export default workoutRoutes;

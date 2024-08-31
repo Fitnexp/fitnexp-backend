@@ -3,6 +3,7 @@ import ExerciseService from '../exercise/exerciseService';
 import IWorkout from './workoutInterface';
 import WorkoutService from './workoutService';
 import { Request, Response } from 'express';
+import { IExercise } from '../exercise/exerciseInterface';
 
 class WorkoutController {
     static async getWorkouts(
@@ -78,6 +79,35 @@ class WorkoutController {
         } catch (_) {
             /* istanbul ignore next */
             throw new Error('Error deleting exercise from workout');
+        }
+    }
+
+    static async addExerciseToWorkout(
+        req: Request & { username?: string },
+        res: Response,
+    ) {
+        try {
+            const { workoutId } = req.params;
+            const username = req.username;
+            const exercise: IExercise = req.body;
+
+            const addExercise = await WorkoutService.addExerciseToWorkout(
+                username as string,
+                workoutId,
+                exercise,
+            );
+
+            if (addExercise.errors) {
+                res.status(400).json(addExercise);
+                return;
+            }
+
+            res.status(200).json({
+                message: 'Exercise added successfully',
+            });
+        } catch (_) {
+            /* istanbul ignore next */
+            throw new Error('Error adding exercise to workout');
         }
     }
 }
