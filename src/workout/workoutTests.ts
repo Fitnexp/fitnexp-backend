@@ -220,47 +220,50 @@ function workoutTests(app: Express) {
         });
 
         describe('when the user adds an exercise to a workout', () => {
-            describe("if the workout id is not valid'", () => {
+            const invalidWorkoutId = 'invalid_id';
+            let validWorkoutId: string;
+            let initialExerciseCount: number;
+
+            beforeAll(async () => {
+                const workout = (await WorkoutService.getWorkoutByName(
+                    workouts[0].username,
+                    workouts[0].name,
+                )) as unknown as IWorkout & { _id: string };
+
+                validWorkoutId = workout._id;
+                initialExerciseCount = workout.exercises.length;
+            });
+
+            describe('if the workout id is not valid', () => {
                 it('should return a 400 status code', async () => {
-                    const workout_id = 'invalid_id';
                     const response = await supertest
                         .agent(app)
-                        .post(`/api/workouts/${workout_id}/exercises`)
+                        .post(`/api/workouts/${invalidWorkoutId}/exercises`)
                         .set('Cookie', cookie)
                         .send(exercises[0]);
 
                     expect(response.status).toBe(400);
-                    return response;
                 });
             });
 
-            describe("if the data is valid'", () => {
-                it('should return a 200 status code', async () => {
-                    const workout = (await WorkoutService.getWorkoutByName(
-                        workouts[0].username,
-                        workouts[0].name,
-                    )) as unknown as IWorkout & { _id: string };
-
-                    const numberExercises = workout.exercises.length;
-
+            describe('if the data is valid', () => {
+                it('should return a 200 status code and add the exercise', async () => {
                     const response = await supertest
                         .agent(app)
-                        .post(`/api/workouts/${workout._id}/exercises`)
+                        .post(`/api/workouts/${validWorkoutId}/exercises`)
                         .set('Cookie', cookie)
                         .send(exercises[0]);
 
                     expect(response.status).toBe(200);
 
                     const updatedWorkout = await WorkoutService.getWorkout(
-                        workout.username,
-                        workout._id,
+                        workouts[0].username,
+                        validWorkoutId,
                     );
 
                     expect((updatedWorkout as IWorkout).exercises.length).toBe(
-                        numberExercises + 1,
+                        initialExerciseCount + 1,
                     );
-
-                    return response;
                 });
             });
         });
