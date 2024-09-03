@@ -77,6 +77,10 @@ class ExerciseService {
                                 { repetitions: 0, weight: 0 },
                                 { repetitions: 0, weight: 0 },
                             ],
+                            greatest_weight: 0,
+                            greatest_theorical_onerm: 0,
+                            greatest_volume_oneset: 0,
+                            greatest_volume: 0,
                         },
                     ]);
                     continue;
@@ -145,7 +149,7 @@ class ExerciseService {
             if (user) {
                 user.exercisesDone += 1;
                 user.weightLifted += sets.reduce(
-                    (total, set) => total + set.weight,
+                    (total, set) => total + set.weight * set.repetitions,
                     0,
                 );
                 user.repetitionsDone += sets.reduce(
