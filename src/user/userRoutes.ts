@@ -151,6 +151,15 @@ userRoutes.route('/logged-user').get(verifyJWT, UserController.loggedUser);
  *                 username:
  *                   type: string
  *                   example: "Alba"
+ *                 exercisesDone:
+ *                   type: number
+ *                   example: 7
+ *                 weightLifted:
+ *                   type: number
+ *                   example: 2700
+ *                 repetitionsDone:
+ *                   type: number
+ *                   example: 230
  *       400:
  *         description: Unauthorized. The request does not include a valid JWT token.
  *         content:
