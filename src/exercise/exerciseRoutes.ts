@@ -142,14 +142,15 @@ exerciseRoutes.post('/names', ExerciseController.getExercisesByName);
  *                      type: string
  *                      example: data:image/jpeg;base64,<base64-encoded-image>
  *       400:
- *         description: Bad request. The request body is missing required fields or contains invalid data.
+ *         description: Unauthorized. The request does not include a valid JWT token.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
  *                 errors:
- *                   type: object
+ *                   type: string
+ *                   example: Unauthorized.
  */
 
 exerciseRoutes.get(
@@ -198,15 +199,24 @@ exerciseRoutes.get(
  *                          type: integer
  *                          description: Weight used
  *                       description: List of sets with repetitions and weight
+ *                     greatest_weight:
+ *                      type: number
+ *                     greatest_theorical_onerm:
+ *                      type: number
+ *                     greatest_volume_oneset:
+ *                      type: number
+ *                     greatest_volume:
+ *                      type: number
  *       400:
- *         description: Bad request. The request body is missing required fields or contains invalid data.
+ *         description: Unauthorized. The request does not include a valid JWT token.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
  *                 errors:
- *                   type: object
+ *                   type: string
+ *                   example: Unauthorized.
  */
 
 exerciseRoutes
@@ -254,6 +264,7 @@ export default exerciseRoutes;
  *                       type: integer
  *                       description: Weight used
  *                   description: List of sets with repetitions and weight
+ *
  *     responses:
  *       200:
  *         description: Completed exercise posted successfully.
